@@ -1,0 +1,8 @@
+packages:
+  - "packages/*"
+  - "packages/adaptors/*"
+  - "examples/*"
+
+allowBuilds:
+  "@biomejs/biome": true
+  esbuild: true

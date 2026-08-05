@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Vitals · Live Monitor</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect x='8' y='8' width='112' height='112' rx='28' fill='%230F172A'/%3E%3Cline x1='28' y1='64' x2='100' y2='64' stroke='%231E293B' stroke-width='2' stroke-dasharray='4 4'/%3E%3Cline x1='64' y1='28' x2='64' y2='100' stroke='%231E293B' stroke-width='2' stroke-dasharray='4 4'/%3E%3Cpath d='M 24 64 L 42 64 L 55 28 L 73 100 L 86 64 L 104 64' fill='none' stroke='%2310B981' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <!-- Resolve the theme before first paint, so there is no flash and both the dark: variant
+         and the palette overrides can key off one explicit attribute. -->
+    <script>
+        document.documentElement.dataset.theme =
+            localStorage.getItem("vitals-theme") ||
+            (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+</head>
+
+<body class="antialiased">
+    <!-- Icon sprite: referenced by <use> so repeated icons cost one definition each. -->
+    <svg hidden aria-hidden="true">
+        <defs>
+            <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="5" width="14" height="14" rx="2" />
+                <rect x="9" y="9" width="6" height="6" />
+                <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" />
+            </symbol>
+            <symbol id="i-mem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="8" width="18" height="9" rx="1" />
+                <path d="M8 8v9M12 8v9M16 8v9" />
+                <path d="M6 20v-3M18 20v-3" />
+            </symbol>
+            <symbol id="i-heap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="5" rx="8" ry="3" />
+                <path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
+                <path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
+            </symbol>
+            <symbol id="i-loop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+                <path d="M21 3v5h-5" />
+                <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+                <path d="M3 21v-5h5" />
+            </symbol>
+            <symbol id="i-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 17a9 9 0 1 1 18 0" />
+                <path d="m12 17 4-6" />
+            </symbol>
+            <symbol id="i-gc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18M8 6V4h8v2" />
+                <path d="M6 6l1 14h10l1-14" />
+                <path d="M10 10v6M14 10v6" />
+            </symbol>
+            <symbol id="i-rps" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 4v16m0 0l3-3M7 20V4m0 0L4 7" />
+            </symbol>
+            <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+            </symbol>
+            <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2 3 14h8l-1 8 10-12h-8z" />
+            </symbol>
+            <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
+                <path d="M12 9v4M12 17h.01" />
+            </symbol>
+            <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="19" r="3" />
+                <circle cx="18" cy="5" r="3" />
+                <path d="M9 19h4a4 4 0 0 0 4-4V8" />
+            </symbol>
+            <symbol id="i-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8V3h5M21 8V3h-5M3 16v5h5M21 16v5h-5" />
+            </symbol>
+            <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+            </symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <header
+        class="sticky top-0 z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-line bg-panel px-5 py-3">
+        <div class="flex items-center gap-2 justify-self-start text-xl">
+            <img
+                class="block size-8 shrink-0 dark:hidden"
+                src="./assets/svgs/vitals_logo_light.svg"
+                alt=""
+                aria-hidden="true"
+            />
+            <img
+                class="hidden size-8 shrink-0 dark:block"
+                src="./assets/svgs/vitals_logo_dark.svg"
+                alt=""
+                aria-hidden="true"
+            />
+
+            <strong class="text-base">Vitals</strong>
+        </div>
+
+        <div class="flex gap-2.5">
+            <span id="meta-uptime" class="badge text-base text-good">up: —</span>
+        </div>
+
+        <div class="flex items-center gap-4 justify-self-end text-xl">
+        
+          <div class="badge flex items-center gap-2">
+            <span id="status-dot" class="dot mr-2" data-state="connecting"></span>
+            <span id="status-text" class="text-base text-muted">connecting…</span>
+          </div>
+        
+          <button type="button" id="theme-toggle" class="icon-button justify-self-end border-line" aria-label="Toggle theme">
+            <svg class="size-[18px] dark:hidden">
+              <use href="#i-sun" />
+            </svg>
+            <svg class="hidden size-[18px] dark:block">
+              <use href="#i-moon" />
+            </svg>
+          </button>
+        </div>
+    </header>
+
+    <main class="flex flex-col gap-10 px-5 py-5 xl:mx-24">
+    
+      <!-- ==================== 1. EVENT LOOP & RUNTIME ==================== -->
+      <section class="pt-10">
+        <h2 class="group-title"><span class="group-title-bar"></span>Event Loop & Runtime</h2>
+    
+        <!-- Runtime Cards -->
+        <div class="pt-4 mb-4 flex flex-wrap gap-4">
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-accent"><svg class="size-[22px]"><use href="#i-cpu" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">CPU</div>
+              <div id="card-cpu" class="card-value">–</div>
+              <div id="sub-cpu" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-accent"><svg class="size-[22px]"><use href="#i-loop" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Loop avg</div>
+              <div id="card-loop-avg" class="card-value">–</div>
+              <div id="sub-loop-avg" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-warn"><svg class="size-[22px]"><use href="#i-loop" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Loop p95</div>
+              <div id="card-loop-p95" class="card-value">–</div>
+              <div id="sub-loop-p95" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-bad"><svg class="size-[22px]"><use href="#i-loop" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Loop p99</div>
+              <div id="card-loop-p99" class="card-value">–</div>
+              <div id="sub-loop-p99" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-accent"><svg class="size-[22px]"><use href="#i-gauge" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Loop Busy</div>
+              <div id="card-elu" class="card-value">–</div>
+              <div id="sub-elu" class="card-sub"></div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Runtime Charts Grid -->
+        <div class="pt-4 grid gap-4 lg:grid-cols-2">
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              CPU %
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="cpu" aria-label="Expand CPU %"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-cpu" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Event Loop Delay (ms)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="loop" aria-label="Expand event loop delay"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-loop" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Loop Utilization (%)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="elu" aria-label="Expand loop utilization"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-elu" class="chart"></div>
+          </article>
+        </div>
+      </section>
+    
+      <!-- ==================== 2. MEMORY & GARBAGE COLLECTION ==================== -->
+      <section class="border-t border-line pt-10">
+        <h2 class="group-title"><span class="group-title-bar"></span>Memory & Garbage Collection</h2>
+    
+        <!-- Memory Summary Cards -->
+        <div class="pt-4 mb-4 flex flex-wrap gap-4">
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-good"><svg class="size-[22px]"><use href="#i-mem" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Memory (RSS)</div>
+              <div id="card-rss" class="card-value">–</div>
+              <div id="sub-rss" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-violet"><svg class="size-[22px]"><use href="#i-heap" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Heap Used</div>
+              <div id="card-heap" class="card-value">–</div>
+              <div id="sub-heap" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-bad"><svg class="size-[22px]"><use href="#i-gc" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">GC Pause / s</div>
+              <div id="card-gc" class="card-value">–</div>
+              <div id="sub-gc" class="card-sub"></div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Memory Charts Grid -->
+        <div class="pt-4 grid gap-4 lg:grid-cols-2">
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Memory (MB)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="rss" aria-label="Expand memory"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-rss" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Heap (MB)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="heap" aria-label="Expand heap"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-heap" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              External &amp; Buffers (MB)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="external" aria-label="Expand external memory"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-external" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              GC Pause (ms)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="gcPause" aria-label="Expand GC pause"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-gcPause" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              GC Collections
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="gcCount" aria-label="Expand GC collections"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-gcCount" class="chart"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================== 3. TRAFFIC & REQUESTS ==================== -->
+      <section class="border-t border-line pt-10">
+        <h2 class="group-title"><span class="group-title-bar"></span>Traffic & Requests</h2>
+        
+        <!-- Traffic Summary Cards -->
+        <div class="pt-4 mb-4 flex flex-wrap gap-4">
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-good"><svg class="size-[22px]"><use href="#i-rps" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Requests / s</div>
+              <div id="card-rps" class="card-value">–</div>
+              <div id="sub-rps" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-accent"><svg class="size-[22px]"><use href="#i-clock" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Latency avg</div>
+              <div id="card-lat-avg" class="card-value">–</div>
+              <div id="sub-lat-avg" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-warn"><svg class="size-[22px]"><use href="#i-clock" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Latency p95</div>
+              <div id="card-lat-p95" class="card-value">–</div>
+              <div id="sub-lat-p95" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-bad"><svg class="size-[22px]"><use href="#i-clock" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Latency p99</div>
+              <div id="card-lat-p99" class="card-value">–</div>
+              <div id="sub-lat-p99" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-accent"><svg class="size-[22px]"><use href="#i-bolt" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">In-flight</div>
+              <div id="card-inflight" class="card-value">–</div>
+              <div id="sub-inflight" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-bad"><svg class="size-[22px]"><use href="#i-warn" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Errors</div>
+              <div id="card-errors" class="card-value">–</div>
+              <div id="sub-errors" class="card-sub"></div>
+            </div>
+          </div>
+          <div class="panel flex flex-1 items-center justify-center gap-8 px-5 py-3.5">
+            <span class="card-icon text-violet"><svg class="size-[22px]"><use href="#i-route" /></svg></span>
+            <div class="min-w-0 shrink-0">
+              <div class="card-label">Routes</div>
+              <div id="card-routes" class="card-value">–</div>
+              <div id="sub-routes" class="card-sub"></div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Traffic Charts Grid -->
+        <div class="pt-4 grid gap-4 lg:grid-cols-2">
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Requests / sec
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="rps" aria-label="Expand requests per second"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-rps" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Latency (ms)
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="latency" aria-label="Expand latency"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-latency" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              Responses by Class
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="status" aria-label="Expand responses by class"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-status" class="chart"></div>
+          </article>
+          <article class="panel chart-panel px-3.5 py-3">
+            <h3 class="mb-3 flex items-center gap-2.5 text-base font-bold">
+              In-flight Requests
+              <button type="button" class="icon-button ml-auto size-[26px]" data-expand="inflight" aria-label="Expand in-flight requests"><svg class="size-[15px]"><use href="#i-expand" /></svg></button>
+            </h3>
+            <div id="chart-inflight" class="chart"></div>
+          </article>
+        </div>
+    
+        <!-- Traffic Tables Grid -->
+        <div class="pt-4 mt-4 grid gap-4 lg:grid-cols-[2fr_1fr]">
+          <div class="panel overflow-x-auto px-3.5 py-3">
+            <h3 class="mb-3 text-base font-bold">Top Routes</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th class="text-sm">Method</th>
+                  <th class="text-sm">Route</th>
+                  <th class="text-sm num">Total</th>
+                  <th class="text-sm num">Req/s</th>
+                  <th class="text-sm num">Avg</th>
+                  <th class="text-sm num">p95</th>
+                  <th class="text-sm num">p99</th>
+                  <th class="text-sm num">Max</th>
+                  <th class="text-sm num">4xx</th>
+                  <th class="text-sm num">5xx</th>
+                </tr>
+              </thead>
+              <tbody id="routes">
+                <tr>
+                  <td colspan="10" class="text-muted">No requests recorded yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel px-3.5 py-3">
+            <h3 class="mb-3 text-base font-bold">Status Codes</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th class="num">Count</th>
+                </tr>
+              </thead>
+              <tbody id="status-codes">
+                <tr>
+                  <td colspan="2" class="text-muted">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    
+      <!-- ==================== 4. ENVIRONMENT ==================== -->
+      <section class="border-t border-line pt-10">
+        <h2 class="group-title"><span class="group-title-bar"></span>Environment</h2>
+      
+        <div class="pt-4 grid gap-4 md:grid-cols-3">
+          <!-- Group 1: Host & System -->
+          <div class="panel flex flex-col gap-3 p-4">
+            <div class="flex items-center justify-between border-b border-line/50 pb-2">
+              <span class="text-base font-semibold tracking-wider text-muted uppercase">System</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="info-label text-muted">Hostname</div>
+                <div id="env-host" class="info-value font-mono font-medium">—</div>
+              </div>
+              <div>
+                <div class="info-label text-muted">Platform</div>
+                <div id="env-platform" class="info-value font-mono font-medium">—</div>
+              </div>
+              <div>
+                <div class="info-label text-muted">PID</div>
+                <div id="env-pid" class="info-value font-mono font-medium">—</div>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Group 2: Runtime & Process -->
+          <div class="panel flex flex-col gap-3 p-4">
+            <div class="flex items-center justify-between border-b border-line/50 pb-2">
+              <span class="text-base font-semibold tracking-wider text-muted uppercase">Runtime</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="info-label text-muted">Node</div>
+                <div id="env-node" class="info-value font-mono font-medium text-violet">—</div>
+              </div>
+              <div>
+                <div class="info-label text-muted">Uptime</div>
+                <div id="env-uptime" class="info-value font-mono font-medium text-good">—</div>
+              </div>
+              <div>
+                <div class="info-label text-muted">Sampling Rate</div>
+                <div id="env-interval" class="info-value font-mono font-medium">—</div>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Group 3: Hardware Resources -->
+          <div class="panel flex flex-col gap-3 p-4">
+            <div class="flex items-center justify-between border-b border-line/50 pb-2">
+              <span class="text-base font-semibold tracking-wider text-muted uppercase">Hardware</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="col-span-2">
+                <div class="info-label text-muted">CPU Model</div>
+                <div id="env-cpu" class="info-value font-mono font-medium" title="—">—</div>
+              </div>
+              <div>
+                <div class="info-label text-muted">Cores</div>
+                <div id="env-cores" class="info-value font-mono font-medium">—</div>
+              </div>
+              <div>
+                <div class="info-label text-muted">Host Memory</div>
+                <div id="env-memory" class="info-value font-mono font-medium">—</div>
+              </div>
+              <div class="col-span-2 border-t border-line/30 pt-2">
+                <div class="info-label text-muted">Heap Limit</div>
+                <div id="env-heaplimit" class="info-value font-mono font-medium">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+    </main>
+
+    <footer class="p-5 text-center text-xs text-muted">
+        Streaming via SSE · History is a rolling window, not a time-series store
+    </footer>
+
+    <dialog id="chart-modal" aria-labelledby="modal-title">
+
+        <div class="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
+
+            <h3 id="modal-title" class="text-[18px] font-bold">
+                Chart
+            </h3>
+
+            <button type="button" id="modal-close" class="icon-button" aria-label="Close">
+                <svg class="size-[18px]">
+                    <use href="#i-close" />
+                </svg>
+            </button>
+
+        </div>
+
+        <div id="modal-chart" class="chart px-5 pb-5 pt-4"></div>
+
+    </dialog>
+
+</body>
+
+</html>

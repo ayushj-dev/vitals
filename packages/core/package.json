@@ -1,0 +1,58 @@
+{
+	"name": "@vitals/core",
+	"description": "Framework-agnostic metrics engine and SSE transport for @vitals",
+	"version": "1.0.0",
+	"license": "MIT",
+	"author": "Ayush Jain",
+	"keywords": [
+		"node",
+		"nodejs",
+		"monitoring",
+		"metrics",
+		"observability",
+		"telemetry",
+		"performance",
+		"server-monitoring",
+		"realtime",
+		"real-time",
+		"sse",
+		"http-metrics"
+	],
+	"homepage": "https://github.com/ayushj-dev/vitals#readme",
+	"bugs": {
+		"url": "https://github.com/ayushj-dev/vitals/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ayushj-dev/vitals.git",
+		"directory": "packages/core"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"type": "module",
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown"
+	},
+	"devDependencies": {
+		"@types/node": "^26.1.2",
+		"tsdown": "^0.22.14",
+		"typescript": "^7.0.2"
+	}
+}

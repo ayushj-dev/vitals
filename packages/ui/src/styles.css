@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+/* Unlayered, so uPlot's own rules always win over Tailwind's preflight and utilities. */
+@import "uplot/dist/uPlot.min.css" layer();
+
+/* Dark mode is driven by data-theme, which an inline script in index.html always sets from
+   localStorage or the system preference. One explicit attribute keeps both the variant and
+   the variable overrides below to a single selector each. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * JetBrainsMono with progressive fallback:
+ *   1. Any locally-installed Nerd Font naming variant.
+ *   2. The plain webfont from jsDelivr — same look, no Nerd Font extras.
+ *   3. System monospace, if the CDN is unreachable.
+ */
+@font-face {
+	font-family: "JBM";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src:
+		local("JetBrainsMono Nerd Font"),
+		local("JetBrainsMonoNL Nerd Font"),
+		local("JetBrainsMono NF"),
+		local("JetBrains Mono"),
+		url("https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-400-normal.woff2")
+		format("woff2");
+}
+@font-face {
+	font-family: "JBM";
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src:
+		local("JetBrainsMono Nerd Font"),
+		local("JetBrainsMonoNL Nerd Font"),
+		local("JetBrainsMono NF"),
+		local("JetBrains Mono"),
+		url("https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-600-normal.woff2")
+		format("woff2");
+}
+
+@theme {
+	--color-bg: #ffffff;
+	--color-panel: #f6f8fa;
+	--color-line: #e4e8ee;
+	--color-fg: #1c1e21;
+	--color-muted: #6b7280;
+	--color-accent: #2563eb;
+	--color-good: #16a34a;
+	--color-warn: #ca8a04;
+	--color-bad: #dc2626;
+	--color-violet: #a855f7;
+	--font-mono: "JBM", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+:root {
+	/* Not theme tokens: the charts read these directly and no utility needs them. */
+	--color-grid: rgba(0, 0, 0, 0.14);
+	--shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="dark"] {
+	--color-bg: #0b0d10;
+	--color-panel: #14171c;
+	--color-line: #232830;
+	--color-fg: #e6e8eb;
+	--color-muted: #9aa3ad;
+	--color-accent: #60a5fa;
+	--color-grid: rgba(255, 255, 255, 0.14);
+	--shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+@layer base {
+	/* 14px root, as in the reference design. Every rem-based size in Tailwind's scale then
+	   resolves to the same value the reference used, rather than being 1/7th larger. */
+	html {
+		font-size: 14px;
+	}
+
+	body {
+		background: var(--color-bg);
+		color: var(--color-fg);
+		font: 1rem / 1.4 var(--font-mono);
+		font-variant-ligatures: contextual;
+	}
+}
+
+@utility panel {
+	background: var(--color-panel);
+	border: 1px solid var(--color-line);
+	box-shadow: var(--shadow-panel);
+	@apply rounded-lg;
+}
+
+@utility icon-button {
+	@apply inline-flex size-[34px] shrink-0 items-center justify-center rounded-lg border border-transparent bg-transparent p-0 text-muted transition-colors;
+	@apply hover:bg-fg/8 hover:text-fg focus-visible:bg-fg/8 focus-visible:text-fg focus-visible:outline-none;
+}
+
+@utility badge {
+	@apply inline-flex items-center rounded-full border px-2.5 py-0.5;
+	background: color-mix(in oklab, currentColor 14%, transparent);
+	border-color: color-mix(in oklab, currentColor 22%, transparent);
+}
+
+/* Section heading with the accent bar to its left. Sizes the reference set in px stay in px. */
+@utility group-title {
+	@apply mb-5 flex items-center gap-3 text-[18px] font-bold tracking-[0.01em];
+}
+@utility group-title-bar {
+	@apply block h-[22px] w-1.5 shrink-0 rounded-[3px] bg-accent;
+}
+
+@utility card-label {
+	@apply mb-1 text-base uppercase text-muted;
+}
+@utility card-value {
+	@apply truncate text-[22px] font-semibold leading-tight tabular-nums;
+}
+@utility card-sub {
+	@apply mt-0.5 truncate text-[11px] text-muted;
+}
+
+@utility card-icon {
+	@apply inline-flex size-[40px] shrink-0 items-center justify-center rounded-lg;
+	background: color-mix(in oklab, currentColor 12%, transparent);
+}
+
+@utility info-label {
+	@apply text-sm uppercase text-muted;
+}
+@utility info-value {
+	@apply truncate text-sm;
+}
+
+@layer components {
+	/* Connection dot. State lives in a data attribute so every selector Tailwind must see is
+	   statically present in the markup. */
+	.dot {
+		position: relative;
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: currentColor;
+		color: var(--color-muted);
+	}
+	.dot[data-state="live"] {
+		color: var(--color-good);
+	}
+	.dot[data-state="down"] {
+		color: var(--color-bad);
+	}
+
+	/* Ripple only while connected: a pulsing disconnected dot would read as healthy. */
+	.dot[data-state="live"]::before,
+	.dot[data-state="live"]::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		background: currentColor;
+		animation: dot-ripple 3s cubic-bezier(0.2, 0.6, 0.2, 1) infinite;
+	}
+	.dot[data-state="live"]::after {
+		animation-delay: 1s;
+	}
+	@keyframes dot-ripple {
+		0% {
+			transform: scale(1);
+			opacity: 0.6;
+		}
+		100% {
+			transform: scale(3.2);
+			opacity: 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.dot::before,
+		.dot::after {
+			display: none;
+		}
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 12px;
+	}
+	th,
+	td {
+		padding: 6px 8px;
+		border-bottom: 1px solid var(--color-line);
+		text-align: left;
+	}
+	th {
+		color: var(--color-muted);
+		font-size: 11px;
+		font-weight: 500;
+		text-transform: uppercase;
+	}
+	.num {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* Panels are a fixed height so uPlot's ResizeObserver cannot feed back into flex growth. */
+	.chart-panel {
+		height: 320px;
+		display: flex;
+		flex-direction: column;
+	}
+	.chart {
+		flex: 1 1 auto;
+		min-height: 0;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	dialog {
+		width: 92vw;
+		max-width: 1400px;
+		height: 82vh;
+		padding: 0;
+		/* Restores the centring that Tailwind's preflight removes: the UA centres a modal
+		   dialog with margin: auto, which the `* { margin: 0 }` reset overrides. */
+		margin: auto;
+		border: 1px solid var(--color-line);
+		border-radius: 12px;
+		background: var(--color-panel);
+		color: var(--color-fg);
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+	}
+	dialog[open] {
+		display: flex;
+		flex-direction: column;
+	}
+	dialog::backdrop {
+		background: rgba(0, 0, 0, 0.55);
+		backdrop-filter: blur(4px);
+	}
+
+	.uplot {
+		font-family: var(--font-mono);
+		color: var(--color-fg);
+	}
+	.u-legend {
+		color: var(--color-muted);
+		font-size: 11px;
+	}
+	.u-legend .u-marker {
+		border-radius: 2px;
+	}
+}

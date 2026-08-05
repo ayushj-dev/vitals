@@ -1,0 +1,61 @@
+{
+	"name": "@vitals/ui",
+	"version": "1.0.0",
+	"description": "Self-contained dashboard HTML for @vitals",
+	"license": "MIT",
+	"author": "Ayush Jain",
+	"keywords": [
+		"dashboard",
+		"monitoring",
+		"metrics",
+		"charts",
+		"observability",
+		"telemetry",
+		"realtime",
+		"real-time",
+		"node",
+		"nodejs"
+	],
+	"homepage": "https://github.com/ayushj-dev/vitals#readme",
+	"bugs": {
+		"url": "https://github.com/ayushj-dev/vitals/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ayushj-dev/vitals.git",
+		"directory": "packages/ui"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"type": "module",
+	"main": "./dist/index.mjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.mts",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.mts",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "vite build && node scripts/inline.mjs",
+		"typecheck": "tsc -p tsconfig.json --noEmit"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.3.3",
+		"@types/node": "^26.1.2",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^7.0.2",
+		"uplot": "^1.6.32",
+		"vite": "^8.2.0",
+		"vite-plugin-singlefile": "^2.3.3"
+	}
+}
