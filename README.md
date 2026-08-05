@@ -89,12 +89,14 @@ yarn add @vitals/express
 
 Requirements:
 
-- Node.js 20+
+- Node.js 18+
 - Express 4 or 5
 
 ---
 
 ## 🚀 Quick start
+
+### 🌐 Express
 
 ```ts
 import express from "express";
