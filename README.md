@@ -14,8 +14,8 @@
 > Vitals currently ships with an official Express adapter. Support for additional Node.js frameworks is planned.
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@vitals/express">
-    <img src="https://img.shields.io/npm/v/@vitals/express.svg" alt="npm">
+  <a href="https://www.npmjs.com/package/@vitalsjs/express">
+    <img src="https://img.shields.io/npm/v/@vitalsjs/express.svg" alt="npm">
   </a>
   <a href="https://nodejs.org">
     <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" alt="Node.js">
@@ -61,30 +61,30 @@ It collects runtime health, memory, CPU, event loop, GC, and HTTP metrics, then 
 
 | Package | Description |
 | --- | --- |
-| [`@vitals/core`](./packages/core) | Metrics engine, collectors and SSE broadcaster |
-| [`@vitals/ui`](./packages/ui) | Self-contained dashboard UI |
-| [`@vitals/express`](./packages/adaptors/express) | Express middleware and dashboard router |
+| [`@vitalsjs/core`](./packages/core) | Metrics engine, collectors and SSE broadcaster |
+| [`@vitalsjs/ui`](./packages/ui) | Self-contained dashboard UI |
+| [`@vitalsjs/express`](./packages/adaptors/express) | Express middleware and dashboard router |
 
-For Express applications, install `@vitals/express`.
+For Express applications, install `@vitalsjs/express`.
 
 ---
 
 ## 📥 Installation
 
 ```bash
-npm install @vitals/express
+npm install @vitalsjs/express
 ```
 
 or:
 
 ```bash
-pnpm add @vitals/express
+pnpm add @vitalsjs/express
 ```
 
 or:
 
 ```bash
-yarn add @vitals/express
+yarn add @vitalsjs/express
 ```
 
 Requirements:
@@ -100,8 +100,8 @@ Requirements:
 
 ```ts
 import express from "express";
-import { VitalsEngine } from "@vitals/core";
-import { createVitalsRouter, vitalsMiddleware } from "@vitals/express";
+import { VitalsEngine } from "@vitalsjs/core";
+import { createVitalsRouter, vitalsMiddleware } from "@vitalsjs/express";
 
 const engine = new VitalsEngine().start();
 
@@ -219,7 +219,7 @@ Vitals uses fixed interval sampling and lightweight collectors (inbuilt node mod
 
 ### Can I use Vitals without Express?
 
-Yes. Use `@vitals/core` and `@vitals/ui` directly for custom HTTP servers.
+Yes. Use `@vitalsjs/core` and `@vitalsjs/ui` directly for custom HTTP servers.
 
 ---
 
@@ -227,10 +227,10 @@ Yes. Use `@vitals/core` and `@vitals/ui` directly for custom HTTP servers.
 
 ```text
 packages/
-  core/                 # @vitals/core
-  ui/                   # @vitals/ui
+  core/                 # @vitalsjs/core
+  ui/                   # @vitalsjs/ui
   adaptors/
-    express/            # @vitals/express
+    express/            # @vitalsjs/express
 
 examples/
 ```

@@ -1,7 +1,7 @@
 {
-	"name": "@vitals/express",
+	"name": "@vitalsjs/express",
 	"version": "1.0.0",
-	"description": "Express adaptor for @vitals",
+	"description": "Express adaptor for @vitalsjs",
 	"license": "MIT",
 	"author": "Ayush Jain",
 	"keywords": [
@@ -55,8 +55,8 @@
 		"build": "tsdown"
 	},
 	"dependencies": {
-		"@vitals/core": "workspace:*",
-		"@vitals/ui": "workspace:*"
+		"@vitalsjs/core": "workspace:*",
+		"@vitalsjs/ui": "workspace:*"
 	},
 	"peerDependencies": {
 		"express": "^4.17.0 || ^5.0.0"

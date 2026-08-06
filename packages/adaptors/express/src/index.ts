@@ -1,6 +1,6 @@
 import { performance } from "node:perf_hooks";
-import { CLIENT_CLOSED_STATUS, UNMATCHED_ROUTE, type VitalsEngine } from "@vitals/core";
-import { dashboardHtml } from "@vitals/ui";
+import { CLIENT_CLOSED_STATUS, UNMATCHED_ROUTE, type VitalsEngine } from "@vitalsjs/core";
+import { dashboardHtml } from "@vitalsjs/ui";
 import { type Request, type RequestHandler, type Response, Router } from "express";
 
 export type VitalsRouterOptions = {

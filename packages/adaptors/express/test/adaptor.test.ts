@@ -1,4 +1,4 @@
-import type { HttpRequestMetric, VitalsEngine } from "@vitals/core";
+import type { HttpRequestMetric, VitalsEngine } from "@vitalsjs/core";
 import express from "express";
 import { describe, expect, it } from "vitest";
 import { createVitalsRouter, vitalsMiddleware } from "../src/index";
@@ -118,7 +118,7 @@ describe("vitalsMiddleware", () => {
 
 describe("createVitalsRouter", () => {
 	it("serves the dashboard and the stream under any mount path", async () => {
-		const { VitalsEngine: Engine } = await import("@vitals/core");
+		const { VitalsEngine: Engine } = await import("@vitalsjs/core");
 		const engine = new Engine().start();
 		const app = express();
 		app.use("/admin/health", createVitalsRouter({ engine }));
@@ -148,7 +148,7 @@ describe("createVitalsRouter", () => {
 	});
 
 	it("denies non-loopback callers by default", async () => {
-		const { VitalsEngine: Engine } = await import("@vitals/core");
+		const { VitalsEngine: Engine } = await import("@vitalsjs/core");
 		const app = express();
 		app.set("trust proxy", true);
 		app.use("/status", createVitalsRouter({ engine: new Engine() }));
@@ -164,7 +164,7 @@ describe("createVitalsRouter", () => {
 	});
 
 	it("honours a custom authorize callback", async () => {
-		const { VitalsEngine: Engine } = await import("@vitals/core");
+		const { VitalsEngine: Engine } = await import("@vitalsjs/core");
 		const app = express();
 		app.use(
 			"/status",

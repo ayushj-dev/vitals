@@ -1,6 +1,6 @@
 # Changesets
 
-This monorepo uses [Changesets](https://github.com/changesets/changesets) to version and publish the `@vitals/*` packages.
+This monorepo uses [Changesets](https://github.com/changesets/changesets) to version and publish the `@vitalsjs/*` packages.
 
 ## Workflow
 
@@ -24,6 +24,6 @@ This monorepo uses [Changesets](https://github.com/changesets/changesets) to ver
    pnpm release
    ```
 
-   Equivalent to `pnpm build && changeset publish`. You must be logged in to npm (`npm login`) and own the `@vitals` scope.
+   Equivalent to `pnpm build && changeset publish`. You must be logged in to npm (`npm login`) and own the `@vitalsjs` scope.
 
 The three publishable packages are **fixed** together so they share one version number.

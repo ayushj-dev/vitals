@@ -14,8 +14,8 @@
 > Vitals currently ships with an official adapter for Express only. Support for additional Node.js frameworks is planned.
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@vitals/ui">
-    <img src="https://img.shields.io/npm/v/@vitals/ui.svg" alt="npm">
+  <a href="https://www.npmjs.com/package/@vitalsjs/ui">
+    <img src="https://img.shields.io/npm/v/@vitalsjs/ui.svg" alt="npm">
   </a>
   <a href="https://nodejs.org">
     <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" alt="Node.js">
@@ -39,24 +39,24 @@
 
 ---
 
-# 📊 @vitals/ui
+# 📊 @vitalsjs/ui
 
 The standalone dashboard package for Vitals.
 
-`@vitals/ui` provides the complete browser interface used to display live metrics. The dashboard is shipped as a single self-contained HTML document with embedded styles and scripts.
+`@vitalsjs/ui` provides the complete browser interface used to display live metrics. The dashboard is shipped as a single self-contained HTML document with embedded styles and scripts.
 
 ---
 
 ## 📥 Installation
 
 ```bash
-npm install @vitals/ui
+npm install @vitalsjs/ui
 ```
 
 or:
 
 ```bash
-pnpm add @vitals/ui
+pnpm add @vitalsjs/ui
 ```
 
 ---
@@ -64,7 +64,7 @@ pnpm add @vitals/ui
 ## 🚀 Usage
 
 ```ts
-import { dashboardHtml } from "@vitals/ui";
+import { dashboardHtml } from "@vitalsjs/ui";
 
 response.setHeader("Content-Type", "text/html");
 response.end(dashboardHtml);
@@ -98,7 +98,7 @@ Contains the complete dashboard HTML document.
 Example:
 
 ```ts
-import { dashboardHtml } from "@vitals/ui";
+import { dashboardHtml } from "@vitalsjs/ui";
 
 serverResponse.end(dashboardHtml);
 ```
@@ -110,7 +110,7 @@ serverResponse.end(dashboardHtml);
 For Express applications, install:
 
 ```bash
-npm install @vitals/express
+npm install @vitalsjs/express
 ```
 
 The Express adapter automatically serves the dashboard and connects it to the Vitals engine.
@@ -119,10 +119,10 @@ The Express adapter automatically serves the dashboard and connects it to the Vi
 
 ## 🏗️ Integration
 
-`@vitals/ui` is designed to work with:
+`@vitalsjs/ui` is designed to work with:
 
-- `@vitals/core` — metrics collection engine
-- `@vitals/express` — Express integration
+- `@vitalsjs/core` — metrics collection engine
+- `@vitalsjs/express` — Express integration
 
 ---
 

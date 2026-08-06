@@ -1,7 +1,7 @@
 {
-	"name": "@vitals/ui",
+	"name": "@vitalsjs/ui",
 	"version": "1.0.0",
-	"description": "Self-contained dashboard HTML for @vitals",
+	"description": "Self-contained dashboard HTML for @vitalsjs",
 	"license": "MIT",
 	"author": "Ayush Jain",
 	"keywords": [

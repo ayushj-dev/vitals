@@ -14,8 +14,8 @@
 > Vitals currently ships with an official adapter for Express only. Support for additional Node.js frameworks is planned.
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@vitals/core">
-    <img src="https://img.shields.io/npm/v/@vitals/core.svg" alt="npm">
+  <a href="https://www.npmjs.com/package/@vitalsjs/core">
+    <img src="https://img.shields.io/npm/v/@vitalsjs/core.svg" alt="npm">
   </a>
   <a href="https://nodejs.org">
     <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" alt="Node.js">
@@ -37,7 +37,7 @@
 
 ---
 
-# 📦 @vitals/core
+# 📦 @vitalsjs/core
 
 The framework-agnostic metrics engine powering Vitals.
 
@@ -48,13 +48,13 @@ It collects runtime metrics, records HTTP activity, maintains a rolling in-memor
 ## 📥 Installation
 
 ```bash
-npm install @vitals/core
+npm install @vitalsjs/core
 ```
 
 or:
 
 ```bash
-pnpm add @vitals/core
+pnpm add @vitalsjs/core
 ```
 
 ---
@@ -62,7 +62,7 @@ pnpm add @vitals/core
 ## 🚀 Quick start
 
 ```ts
-import { VitalsEngine } from "@vitals/core";
+import { VitalsEngine } from "@vitalsjs/core";
 
 const engine = new VitalsEngine({
   sampleIntervalMs: 1000,
@@ -137,13 +137,13 @@ Main methods:
 
 ## 🔌 Framework support
 
-`@vitals/core` is framework-agnostic.
+`@vitalsjs/core` is framework-agnostic.
 
 Use it directly with Node.js HTTP servers or through official adapters.
 
 Currently supported:
 
-- Express via `@vitals/express`
+- Express via `@vitalsjs/express`
 
 ---
 

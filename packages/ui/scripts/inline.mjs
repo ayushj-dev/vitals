@@ -20,5 +20,5 @@ writeFileSync(
 
 const raw = Buffer.byteLength(html);
 console.log(
-	`@vitals/ui: dashboard ${(raw / 1024).toFixed(1)} kB raw, ${(gzipSync(html).length / 1024).toFixed(1)} kB gzip`,
+	`@vitalsjs/ui: dashboard ${(raw / 1024).toFixed(1)} kB raw, ${(gzipSync(html).length / 1024).toFixed(1)} kB gzip`,
 );

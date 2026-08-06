@@ -1,6 +1,6 @@
 {
-	"name": "@vitals/core",
-	"description": "Framework-agnostic metrics engine and SSE transport for @vitals",
+	"name": "@vitalsjs/core",
+	"description": "Framework-agnostic metrics engine and SSE transport for @vitalsjs",
 	"version": "1.0.0",
 	"license": "MIT",
 	"author": "Ayush Jain",

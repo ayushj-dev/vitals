@@ -29,10 +29,10 @@ importers:
 
   examples/express:
     dependencies:
-      '@vitals/core':
+      '@vitalsjs/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vitals/express':
+      '@vitalsjs/express':
         specifier: workspace:*
         version: link:../../packages/adaptors/express
       express:
@@ -54,10 +54,10 @@ importers:
 
   packages/adaptors/express:
     dependencies:
-      '@vitals/core':
+      '@vitalsjs/core':
         specifier: workspace:*
         version: link:../../core
-      '@vitals/ui':
+      '@vitalsjs/ui':
         specifier: workspace:*
         version: link:../../ui
     devDependencies:

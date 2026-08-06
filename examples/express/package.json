@@ -7,8 +7,8 @@
 		"start": "tsx src/server.ts"
 	},
 	"dependencies": {
-		"@vitals/core": "workspace:*",
-		"@vitals/express": "workspace:*",
+		"@vitalsjs/core": "workspace:*",
+		"@vitalsjs/express": "workspace:*",
 		"express": "^5.2.1"
 	},
 	"devDependencies": {

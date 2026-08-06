@@ -1,5 +1,5 @@
-import { VitalsEngine } from "@vitals/core";
-import { createVitalsRouter, vitalsMiddleware } from "@vitals/express";
+import { VitalsEngine } from "@vitalsjs/core";
+import { createVitalsRouter, vitalsMiddleware } from "@vitalsjs/express";
 import express from "express";
 
 const engine = new VitalsEngine().start();

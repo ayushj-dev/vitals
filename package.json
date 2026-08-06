@@ -1,5 +1,5 @@
 {
-	"name": "@vitals/monorepo",
+	"name": "@vitalsjs/monorepo",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -21,7 +21,7 @@
 	"scripts": {
 		"build": "pnpm -r run build",
 		"lint": "biome check .",
-		"typecheck": "tsc -p tsconfig.json --noEmit && pnpm --filter @vitals/ui run typecheck",
+		"typecheck": "tsc -p tsconfig.json --noEmit && pnpm --filter @vitalsjs/ui run typecheck",
 		"test": "vitest run",
 		"changeset": "changeset",
 		"version-packages": "changeset version",

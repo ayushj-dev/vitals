@@ -14,8 +14,8 @@
 > Vitals currently ships with an official adapter for Express only. Support for additional Node.js frameworks is planned.
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@vitals/express">
-    <img src="https://img.shields.io/npm/v/@vitals/express.svg" alt="npm">
+  <a href="https://www.npmjs.com/package/@vitalsjs/express">
+    <img src="https://img.shields.io/npm/v/@vitalsjs/express.svg" alt="npm">
   </a>
   <a href="https://nodejs.org">
     <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" alt="Node.js">
@@ -39,24 +39,24 @@
 
 ---
 
-# 🚂 @vitals/express
+# 🚂 @vitalsjs/express
 
 Express.js integration layer for Vitals.
 
-`@vitals/express` connects Express applications with the Vitals engine by providing request tracking middleware and a dashboard router.
+`@vitalsjs/express` connects Express applications with the Vitals engine by providing request tracking middleware and a dashboard router.
 
 ---
 
 ## 📥 Installation
 
 ```bash
-npm install @vitals/express
+npm install @vitalsjs/express
 ```
 
 or:
 
 ```bash
-pnpm add @vitals/express
+pnpm add @vitalsjs/express
 ```
 
 ---
@@ -72,11 +72,11 @@ pnpm add @vitals/express
 
 ```ts
 import express from "express";
-import { VitalsEngine } from "@vitals/core";
+import { VitalsEngine } from "@vitalsjs/core";
 import {
   createVitalsRouter,
   vitalsMiddleware,
-} from "@vitals/express";
+} from "@vitalsjs/express";
 
 const app = express();
 
@@ -182,8 +182,8 @@ This prevents the dashboard's long-lived SSE connection from being counted as ap
 
 ## 🔌 Related packages
 
-- 📦 `@vitals/core` — metrics engine
-- 📊 `@vitals/ui` — dashboard interface
+- 📦 `@vitalsjs/core` — metrics engine
+- 📊 `@vitalsjs/ui` — dashboard interface
 
 ---
 
