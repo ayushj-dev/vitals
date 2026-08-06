@@ -9,7 +9,7 @@
   <strong>Lightweight, zero-dependency, real-time monitoring for Node.js servers.</strong>
 </p>
 
-> [!IMPORTANT]
+> 🚨 **Important:**
 > **Framework support is currently limited to Express.**
 > Vitals currently ships with an official adapter for Express only. Support for additional Node.js frameworks is planned.
 
@@ -34,7 +34,7 @@
 
 > **Vitals** provides real-time monitoring for Express applications through middleware-based request tracking and a built-in live dashboard.
 
-> [!NOTE]
+> ⚠️ **Note:** 
 > Vitals is designed for live inspection and debugging — not long-term metrics storage or alerting.
 
 ---

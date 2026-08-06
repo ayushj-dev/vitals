@@ -1,6 +1,6 @@
 {
 	"name": "@vitalsjs/express",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Express adaptor for @vitalsjs",
 	"license": "MIT",
 	"author": "Ayush Jain",
