@@ -1,5 +1,17 @@
 # @vitalsjs/express
 
+## 1.1.0
+
+### Minor Changes
+
+- Add CommonJS support with dual ESM/CJS package exports
+
+### Patch Changes
+
+- Updated dependencies
+  - @vitalsjs/core@1.1.0
+  - @vitalsjs/ui@1.1.0
+
 ## 1.0.2
 
 ### Patch Changes

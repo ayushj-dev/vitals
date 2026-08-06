@@ -1,5 +1,11 @@
 # @vitalsjs/core
 
+## 1.1.0
+
+### Minor Changes
+
+- Add CommonJS support with dual ESM/CJS package exports
+
 ## 1.0.2
 
 ### Patch Changes
