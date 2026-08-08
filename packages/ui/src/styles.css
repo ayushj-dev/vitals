@@ -8,39 +8,6 @@
    the variable overrides below to a single selector each. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/*
- * JetBrainsMono with progressive fallback:
- *   1. Any locally-installed Nerd Font naming variant.
- *   2. The plain webfont from jsDelivr — same look, no Nerd Font extras.
- *   3. System monospace, if the CDN is unreachable.
- */
-@font-face {
-	font-family: "JBM";
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src:
-		local("JetBrainsMono Nerd Font"),
-		local("JetBrainsMonoNL Nerd Font"),
-		local("JetBrainsMono NF"),
-		local("JetBrains Mono"),
-		url("https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-400-normal.woff2")
-		format("woff2");
-}
-@font-face {
-	font-family: "JBM";
-	font-style: normal;
-	font-weight: 600;
-	font-display: swap;
-	src:
-		local("JetBrainsMono Nerd Font"),
-		local("JetBrainsMonoNL Nerd Font"),
-		local("JetBrainsMono NF"),
-		local("JetBrains Mono"),
-		url("https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-600-normal.woff2")
-		format("woff2");
-}
-
 @theme {
 	--color-bg: #ffffff;
 	--color-panel: #f6f8fa;
@@ -52,7 +19,7 @@
 	--color-warn: #ca8a04;
 	--color-bad: #dc2626;
 	--color-violet: #a855f7;
-	--font-mono: "JBM", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	--font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 :root {

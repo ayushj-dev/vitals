@@ -1,6 +1,10 @@
 import { type ChartSeries, Panel } from "./charts";
 import "./styles.css";
 
+/* These are imported here so that vite bundles them */
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/600.css";
+
 type StaticInfo = {
 	hostname: string;
 	platform: string;

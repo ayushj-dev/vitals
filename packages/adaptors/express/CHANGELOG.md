@@ -1,5 +1,13 @@
 # @vitalsjs/express
 
+## 1.1.1
+
+### Patch Changes
+
+- Add a Content Security Policy (CSP) response header with per-request nonces for inline scripts and styles to improve security, prevent browser errors when opening the dashboard, and document its behavior.
+- Updated dependencies
+  - @vitalsjs/ui@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { performance } from "node:perf_hooks";
 import { CLIENT_CLOSED_STATUS, UNMATCHED_ROUTE, type VitalsEngine } from "@vitalsjs/core";
 import { dashboardHtml } from "@vitalsjs/ui";
@@ -68,7 +69,19 @@ export function createVitalsRouter(options: VitalsRouterOptions): Router {
 
 	// Static HTML with no interpolation, so Express's ETag turns reloads into 304s.
 	router.get("/", (_req, res) => {
-		res.type("html").send(dashboardHtml);
+		const nonce = randomUUID();
+
+		res.set(
+			"Content-Security-Policy",
+			[
+				`script-src 'self' 'nonce-${nonce}'`,
+				`style-src 'self' 'nonce-${nonce}'`,
+				`img-src 'self' data:`,
+				`font-src 'self' data:`,
+			].join("; "),
+		);
+
+		res.type("html").send(dashboardHtml.replaceAll("__VITALS_CSP_NONCE__", nonce));
 	});
 
 	// Static info and history arrive in the stream's init frame, so there is no /history route.

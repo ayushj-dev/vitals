@@ -1,5 +1,12 @@
 # @vitalsjs/ui
 
+## 1.1.1
+
+### Patch Changes
+
+- Add a Content Security Policy (CSP) with nonces for inline scripts and styles to improve security.
+- Replace CDN-hosted fonts with embedded fonts to remove the external font dependency and improve reliability.
+
 ## 1.1.0
 
 ### Minor Changes

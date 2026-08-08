@@ -1,6 +1,6 @@
 {
 	"name": "@vitalsjs/ui",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Self-contained dashboard HTML for @vitalsjs",
 	"license": "MIT",
 	"author": "Ayush Jain",
@@ -53,6 +53,7 @@
 		"typecheck": "tsc -p tsconfig.json --noEmit"
 	},
 	"devDependencies": {
+		"@fontsource/jetbrains-mono": "^5.3.0",
 		"@tailwindcss/vite": "^4.3.3",
 		"@types/node": "^26.1.2",
 		"tailwindcss": "^4.3.3",

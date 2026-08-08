@@ -6,6 +6,9 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 // inlined. scripts/inline.mjs then turns that file into the package's dist output.
 export default defineConfig({
 	plugins: [tailwindcss(), viteSingleFile()],
+	html: {
+		cspNonce: "__VITALS_CSP_NONCE__",
+	},
 	build: {
 		outDir: ".vite-out",
 		emptyOutDir: true,

@@ -14,12 +14,12 @@
     />
     <!-- Resolve the theme before first paint, so there is no flash and both the dark: variant
          and the palette overrides can key off one explicit attribute. -->
-    <script>
+    <script nonce="__VITALS_CSP_NONCE__">
         document.documentElement.dataset.theme =
             localStorage.getItem("vitals-theme") ||
             (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     </script>
-    <script type="module" src="/src/main.ts"></script>
+    <script nonce="__VITALS_CSP_NONCE__" type="module" src="/src/main.ts"></script>
 </head>
 
 <body class="antialiased">

@@ -34,7 +34,7 @@
 
 > **Vitals** provides real-time monitoring for Express applications through middleware-based request tracking and a built-in live dashboard.
 
-> ⚠️ **Note:** 
+> ⚠️ **Note:**
 > Vitals is designed for live inspection and debugging — not long-term metrics storage or alerting.
 
 ---
@@ -63,7 +63,7 @@ pnpm add @vitalsjs/express
 
 ## 📋 Requirements
 
-- 🟢 Node.js >= 20
+- 🟢 Node.js >= 18
 - 🚂 Express 4 or 5
 
 ---
@@ -144,10 +144,10 @@ app.use(
 
 Available endpoints:
 
-| Method | Path | Description |
-| --- | --- | --- |
-| `GET` | `/` | Dashboard UI |
-| `GET` | `/events` | SSE metrics stream |
+| Method | Path      | Description        |
+| ------ | --------- | ------------------ |
+| `GET`  | `/`       | Dashboard UI       |
+| `GET`  | `/events` | SSE metrics stream |
 
 ---
 
@@ -163,6 +163,14 @@ createVitalsRouter({
 ```
 
 By default, dashboard access is restricted to loopback clients.
+
+---
+
+## 🛡️ Content Security Policy (CSP)
+
+The dashboard serves a standalone HTML application and automatically sets a route-specific `Content-Security-Policy` header.
+
+This policy only applies to responses served by the Vitals dashboard routes and does **not** affect the rest of your Express application.
 
 ---
 
